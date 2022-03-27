@@ -4,7 +4,6 @@ import com.germ.germplugin.api.GermSlotAPI
 import com.skillw.attsystem.AttributeSystem
 import com.skillw.attsystem.AttributeSystem.attributeSystemAPI
 import com.skillw.attsystem.AttributeSystem.equipmentDataManager
-import com.skillw.attsystem.api.attribute.Attribute
 import com.skillw.attsystem.api.attribute.compound.AttributeData
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
 import com.skillw.attsystem.api.equipment.EquipmentDataCompound
@@ -157,36 +156,36 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
 
 
     override fun readItemLore(
-        oriented: Attribute.Oriented,
+
         itemStack: ItemStack,
         livingEntity: LivingEntity?
     ): AttributeData? {
-        return readItemLore(oriented, itemStack, livingEntity, "null")
+        return readItemLore(itemStack, livingEntity, "null")
     }
 
     override fun readItemLore(
-        oriented: Attribute.Oriented,
+
         itemStack: ItemStack,
         livingEntity: LivingEntity?,
         slot: String
     ): AttributeData? {
         if (itemStack.hasLore()) {
-            return attributeSystemAPI.read(oriented, itemStack.itemMeta?.lore ?: return null, livingEntity, slot)
+            return attributeSystemAPI.read(itemStack.itemMeta?.lore ?: return null, livingEntity, slot)
         }
         return null
     }
 
 
     override fun readItemsLore(
-        oriented: Attribute.Oriented,
+
         itemStacks: Collection<ItemStack>,
         livingEntity: LivingEntity?
     ): AttributeData? {
-        return readItemsLore(oriented, itemStacks, livingEntity, "null")
+        return readItemsLore(itemStacks, livingEntity, "null")
     }
 
     override fun readItemsLore(
-        oriented: Attribute.Oriented,
+
         itemStacks: Collection<ItemStack>,
         livingEntity: LivingEntity?,
         slot: String
@@ -196,7 +195,7 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
                 val attributeData = AttributeData()
                 for (item: ItemStack in itemStacks) {
                     attributeData.operation(
-                        readItemLore(oriented, item, livingEntity, slot) ?: continue
+                        readItemLore(item, livingEntity, slot) ?: continue
                     )
                 }
                 attributeData
@@ -210,15 +209,14 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
     }
 
     override fun readItemNBT(
-        oriented: Attribute.Oriented,
         itemStack: ItemStack,
         livingEntity: LivingEntity?
     ): AttributeDataCompound? {
-        return AttributeDataCompound.fromItem(itemStack, oriented)
+        return AttributeDataCompound.fromItem(itemStack)
     }
 
     override fun readItemsNBT(
-        oriented: Attribute.Oriented,
+
         itemStacks: Collection<ItemStack>,
         livingEntity: LivingEntity?
     ): AttributeDataCompound? {
@@ -227,7 +225,7 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
                 val attributeDataCompound = AttributeDataCompound()
                 for (item: ItemStack in itemStacks) {
                     attributeDataCompound.operation(
-                        readItemNBT(oriented, item, livingEntity) ?: continue
+                        readItemNBT(item, livingEntity) ?: continue
                     )
                 }
                 attributeDataCompound
@@ -241,23 +239,23 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
     }
 
     override fun readItem(
-        oriented: Attribute.Oriented,
+
         itemStack: ItemStack,
         livingEntity: LivingEntity?
     ): AttributeDataCompound {
-        return readItem(oriented, itemStack, livingEntity, "null")
+        return readItem(itemStack, livingEntity, "null")
     }
 
     override fun readItem(
-        oriented: Attribute.Oriented,
+
         itemStack: ItemStack,
         livingEntity: LivingEntity?,
         slot: String
     ): AttributeDataCompound {
         val attributeDataCompound = AttributeDataCompound()
         attributeDataCompound["LORE-ATTRIBUTE"] =
-            readItemLore(oriented, itemStack, livingEntity, slot)?.release() ?: AttributeData().release()
-        attributeDataCompound.operation(readItemNBT(oriented, itemStack, livingEntity) ?: AttributeDataCompound())
+            readItemLore(itemStack, livingEntity, slot)?.release() ?: AttributeData().release()
+        attributeDataCompound.operation(readItemNBT(itemStack, livingEntity) ?: AttributeDataCompound())
 
         val event = ItemReadEvent(
             livingEntity ?: return attributeDataCompound,
@@ -274,15 +272,15 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
     }
 
     override fun readItems(
-        oriented: Attribute.Oriented,
+
         itemStacks: Collection<ItemStack>,
         livingEntity: LivingEntity?
     ): AttributeDataCompound {
-        return readItems(oriented, itemStacks, livingEntity, "null")
+        return readItems(itemStacks, livingEntity, "null")
     }
 
     override fun readItems(
-        oriented: Attribute.Oriented,
+
         itemStacks: Collection<ItemStack>,
         livingEntity: LivingEntity?,
         slot: String
@@ -292,7 +290,7 @@ object EquipmentDataManagerImpl : EquipmentDataManager() {
                 val attributeDataCompound = AttributeDataCompound()
                 for (item: ItemStack in itemStacks) {
                     attributeDataCompound.operation(
-                        readItem(oriented, item, livingEntity)
+                        readItem(item, livingEntity)
                     )
                 }
                 attributeDataCompound

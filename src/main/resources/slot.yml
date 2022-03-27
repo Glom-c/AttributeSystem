@@ -1,10 +1,11 @@
 player:
   #左ID 右槽位
-  'HEAD':
-    slot: 'HEAD'
-    #必须含的lore
-    requirements:
-      - '头盔'
+  'HEAD': 'HEAD'
+  #  'HEAD':
+  #    slot: 'HEAD'
+  #    #必须含的lore
+  #    requirements:
+  #      - '头盔'
   #可节点形式/字符串形式
   'CHEST': CHEST
   'LEGS': LEGS

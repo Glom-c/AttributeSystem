@@ -3,15 +3,16 @@ package com.skillw.attsystem.internal.manager
 import com.skillw.attsystem.AttributeSystem
 import com.skillw.attsystem.AttributeSystem.configManager
 import com.skillw.attsystem.api.AttributeSystemAPI
-import com.skillw.attsystem.api.attribute.Attribute
 import com.skillw.attsystem.api.attribute.compound.AttributeData
 import com.skillw.attsystem.api.event.StringsReadEvent
+import com.skillw.attsystem.internal.manager.ASConfig.ignores
 import com.skillw.pouvoir.util.EntityUtils.isAlive
 import com.skillw.pouvoir.util.EntityUtils.livingEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
+import taboolib.module.chat.uncolored
 import java.util.*
 import java.util.concurrent.ExecutionException
 
@@ -49,36 +50,34 @@ object AttributeSystemAPIImpl : AttributeSystemAPI {
     }
 
     override fun read(
-        oriented: Attribute.Oriented,
         livingEntity: LivingEntity?,
         vararg strings: String
     ): AttributeData {
-        return read(oriented, "null", livingEntity, *strings)
+        return read("null", livingEntity, *strings)
     }
 
-    override fun read(oriented: Attribute.Oriented, strings: List<String>, livingEntity: LivingEntity?): AttributeData {
-        return read(oriented, strings, livingEntity, "null")
+    override fun read(strings: List<String>, livingEntity: LivingEntity?): AttributeData {
+        return read(strings, livingEntity, "null")
     }
 
-    override fun read(oriented: Attribute.Oriented, uuid: UUID, vararg strings: String): AttributeData {
-        return read(oriented, "null", uuid.livingEntity(), *strings)
+    override fun read(uuid: UUID, vararg strings: String): AttributeData {
+        return read("null", uuid.livingEntity(), *strings)
     }
 
-    override fun read(oriented: Attribute.Oriented, strings: List<String>, uuid: UUID): AttributeData {
-        return read(oriented, strings, uuid.livingEntity(), "null")
+    override fun read(strings: List<String>, uuid: UUID): AttributeData {
+        return read(strings, uuid.livingEntity(), "null")
     }
 
     override fun read(
-        oriented: Attribute.Oriented,
+
         slot: String,
         livingEntity: LivingEntity?,
         vararg strings: String
     ): AttributeData {
-        return read(oriented, strings.asList(), livingEntity, "null")
+        return read(strings.asList(), livingEntity, "null")
     }
 
     override fun read(
-        oriented: Attribute.Oriented,
         strings: List<String>,
         livingEntity: LivingEntity?,
         slot: String
@@ -87,22 +86,46 @@ object AttributeSystemAPIImpl : AttributeSystemAPI {
             return AttributeSystem.poolExecutor.submit<AttributeData> {
                 try {
                     val attributeData = AttributeData()
+
                     if (!AttributeSystem.conditionManager.conditionStrings(
                             slot,
                             livingEntity,
                             strings
                         )
                     ) return@submit attributeData
+
                     strings@ for (string in strings) {
+
+                        if (ignores.any { string.uncolored().contains(it) }) continue
+
+                        val matcher = ASConfig.lineConditionPattern.matcher(string)
+
+                        if (matcher.find()) {
+                            try {
+                                val requirements = matcher.group("requirement")
+                                if (!AttributeSystem.conditionManager.lineConditions(
+                                        slot,
+                                        requirements,
+                                        livingEntity
+                                    )
+                                ) continue
+                            } catch (e: Exception) {
+
+                            }
+                        }
+
                         att@ for (attribute in AttributeSystem.attributeManager.attributes) {
-                            if (!attribute.isOriented(oriented)) continue
-                            val status = attribute.read(string, livingEntity, slot)
+
+                            val status = attribute.readPattern.read(string, attribute, livingEntity, slot)
+
                             if (status != null) {
                                 attributeData.operation(attribute, status)
                                 continue@strings
                             }
                         }
+
                     }
+
                     val event = StringsReadEvent(livingEntity ?: return@submit attributeData, strings, attributeData)
                     event.call()
                     return@submit if (!event.isCancelled) event.attributeData else AttributeData()
@@ -119,12 +142,12 @@ object AttributeSystemAPIImpl : AttributeSystemAPI {
         return AttributeData()
     }
 
-    override fun read(oriented: Attribute.Oriented, slot: String, uuid: UUID, vararg strings: String): AttributeData {
-        return read(oriented, slot, uuid.livingEntity(), *strings)
+    override fun read(slot: String, uuid: UUID, vararg strings: String): AttributeData {
+        return read(slot, uuid.livingEntity(), *strings)
     }
 
-    override fun read(oriented: Attribute.Oriented, strings: List<String>, uuid: UUID, slot: String): AttributeData {
-        return read(oriented, strings, uuid.livingEntity(), slot)
+    override fun read(strings: List<String>, uuid: UUID, slot: String): AttributeData {
+        return read(strings, uuid.livingEntity(), slot)
     }
 
     override fun update(entity: Entity) {
@@ -139,7 +162,6 @@ object AttributeSystemAPIImpl : AttributeSystemAPI {
     override fun update(uuid: UUID) {
         AttributeSystem.equipmentDataManager.update(uuid)
         AttributeSystem.attributeDataManager.update(uuid)
-        AttributeSystem.formulaManager.realize(uuid)
     }
 
 

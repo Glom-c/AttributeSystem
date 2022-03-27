@@ -8,10 +8,7 @@ import org.bukkit.entity.Entity
 import java.util.*
 
 abstract class AttributeDataManager : BaseMap<UUID, AttributeDataCompound>(), Manager {
-
-
-    abstract var playerBaseAttribute: AttributeData
-    abstract var entityBaseAttribute: AttributeData
+    
 
     abstract fun updateAll()
 

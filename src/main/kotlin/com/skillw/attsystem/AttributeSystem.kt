@@ -2,14 +2,12 @@ package com.skillw.attsystem
 
 import com.skillw.attsystem.api.AttributeSystemAPI
 import com.skillw.attsystem.api.manager.*
-import com.skillw.attsystem.internal.listener.FightListener
 import com.skillw.attsystem.internal.manager.ASConfig
 import com.skillw.pouvoir.api.annotation.PManager
 import com.skillw.pouvoir.api.manager.ManagerData
 import com.skillw.pouvoir.api.plugin.SubPouvoir
 import com.skillw.pouvoir.api.thread.BasicThreadFactory
 import com.skillw.pouvoir.util.FileUtils
-import com.skillw.pouvoir.util.MessageUtils
 import com.skillw.pouvoir.util.MessageUtils.info
 import com.skillw.pouvoir.util.Pair
 import org.bukkit.Bukkit
@@ -36,11 +34,8 @@ object AttributeSystem : Plugin(), SubPouvoir {
     }
 
     override fun getConfigs(): MutableMap<String, Pair<File, YamlConfiguration>> {
-
         return mutableMapOf(
             "config" to Pair(config.file!!, FileUtils.loadConfigFile(config.file!!)!!),
-            "formula" to Pair(formula.file!!, FileUtils.loadConfigFile(formula.file!!)!!),
-            "message" to Pair(message.file!!, FileUtils.loadConfigFile(message.file!!)!!),
             "slot" to Pair(slot.file!!, FileUtils.loadConfigFile(slot.file!!)!!)
         )
     }
@@ -51,12 +46,6 @@ object AttributeSystem : Plugin(), SubPouvoir {
 
     @Config("config.yml")
     lateinit var config: ConfigFile
-
-    @Config("formula.yml")
-    lateinit var formula: ConfigFile
-
-    @Config("message.yml")
-    lateinit var message: ConfigFile
 
     @Config("slot.yml")
     lateinit var slot: ConfigFile
@@ -75,15 +64,11 @@ object AttributeSystem : Plugin(), SubPouvoir {
 
     @JvmStatic
     @PManager
-    lateinit var readGroupManager: ReadGroupManager
+    lateinit var readPatternManager: ReadPatternManager
 
     @JvmStatic
     @PManager
     lateinit var attributeManager: AttributeManager
-
-    @JvmStatic
-    @PManager
-    lateinit var operationManager: OperationManager
 
     @JvmStatic
     @PManager
@@ -109,34 +94,6 @@ object AttributeSystem : Plugin(), SubPouvoir {
     @PManager
     lateinit var formulaManager: FormulaManager
 
-    @JvmStatic
-    @PManager
-    lateinit var damageTypeManager: DamageTypeManager
-
-    @JvmStatic
-    @PManager
-    lateinit var mechanicManager: MechanicManager
-
-    @JvmStatic
-    @PManager
-    lateinit var mechanicGroupManager: MechanicGroupManager
-
-    @JvmStatic
-    @PManager
-    lateinit var cooldownManager: CooldownManager
-
-    @JvmStatic
-    @PManager
-    lateinit var personalManager: PersonalManager
-
-    @JvmStatic
-    @PManager
-    lateinit var triggerManager: TriggerManager
-
-    @JvmStatic
-    @PManager
-    lateinit var fightManager: FightManager
-
     override fun onLoad() {
         load()
         info("&d[&9AttributeSystem&d] &aAttributeSystem is loaded...")
@@ -148,7 +105,6 @@ object AttributeSystem : Plugin(), SubPouvoir {
     }
 
     override fun onActive() {
-        Bukkit.getPluginManager().registerEvents(FightListener, plugin)
         active()
     }
 
@@ -159,13 +115,6 @@ object AttributeSystem : Plugin(), SubPouvoir {
         disable()
         Bukkit.getScheduler().cancelTasks(this.plugin)
         info("&d[&9AttributeSystem&d] &aAttributeSystem is disabled...")
-    }
-
-    @JvmStatic
-    fun debug(string: String) {
-        if (configManager.debug) {
-            MessageUtils.debug(string)
-        }
     }
 
 }

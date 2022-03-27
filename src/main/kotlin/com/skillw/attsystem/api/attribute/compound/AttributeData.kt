@@ -1,20 +1,15 @@
 package com.skillw.attsystem.api.attribute.compound
 
 import com.skillw.attsystem.AttributeSystem.attributeManager
-import com.skillw.attsystem.AttributeSystem.configManager
 import com.skillw.attsystem.api.attribute.Attribute
-import com.skillw.attsystem.api.attribute.status.AttributeStatus
-import com.skillw.pouvoir.Pouvoir
+import com.skillw.attsystem.api.attribute.status.Status
 import com.skillw.pouvoir.api.map.BaseMap
 import org.bukkit.inventory.ItemStack
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.getItemTag
 import taboolib.module.nms.setItemTag
-import java.util.concurrent.ConcurrentHashMap
 
-class AttributeData : BaseMap<Attribute, AttributeStatus> {
-
-
+class AttributeData : BaseMap<Attribute, Status> {
     constructor()
     constructor(release: Boolean) {
         this.release = release
@@ -41,11 +36,11 @@ class AttributeData : BaseMap<Attribute, AttributeStatus> {
         return this
     }
 
-    fun operation(attribute: Attribute, attributeStatus: AttributeStatus): AttributeData {
+    fun operation(attribute: Attribute, status: Status): AttributeData {
         if (!this.containsKey(attribute)) {
-            this.register(attribute, attributeStatus)
+            this.register(attribute, status)
         } else {
-            this[attribute] = this[attribute]!!.operation(attributeStatus, attribute.readGroup)
+            this[attribute] = this[attribute]!!.operation(status)
         }
         return this
     }
@@ -58,21 +53,6 @@ class AttributeData : BaseMap<Attribute, AttributeStatus> {
         }
     }
 
-    val combatValue: Double
-        get() {
-            val argsMap: MutableMap<String, Any> = ConcurrentHashMap()
-            super.map.forEach { (key, value) -> argsMap[key.key] = value }
-            return Pouvoir.scriptManager.invoke(
-                configManager.combatValueScript.toString(),
-                argsMap = argsMap
-            ).toString().toDouble()
-        }
-
-    fun opposite(): AttributeData {
-        this.replaceAll { k, _ -> this[k]!!.opposite() }
-        return this
-    }
-
     fun toCompound(key: String): AttributeDataCompound {
         val compound = AttributeDataCompound()
         compound.register(key, this)
@@ -83,7 +63,7 @@ class AttributeData : BaseMap<Attribute, AttributeStatus> {
         return map.toString()
     }
 
-    operator fun get(attributeKey: String): AttributeStatus? {
+    operator fun get(attributeKey: String): Status? {
         return this[attributeManager[attributeKey] ?: return null]
     }
 
@@ -116,12 +96,14 @@ class AttributeData : BaseMap<Attribute, AttributeStatus> {
     }
 
     companion object {
-        fun fromItemTag(itemTag: ItemTag, oriented: Attribute.Oriented = Attribute.Oriented.ALL): AttributeData {
+        fun fromItemTag(itemTag: ItemTag): AttributeData {
             val attributeData = AttributeData()
             for ((attKey, value) in itemTag) {
-                val attributeStatus: AttributeStatus = AttributeStatus.deserialize(value.asCompound()) ?: continue
-                val attribute = attributeManager[attKey]!!
-                if (attribute.isOriented(oriented)) attributeData.register(attribute, attributeStatus)
+                val attribute = attributeManager[attKey] ?: continue
+                val attributeStatus =
+                    attribute.readPattern.readNBT(value.asCompound().mapValues { it.value.unsafeData() }, attribute)
+                        ?: continue
+                attributeData.register(attribute, attributeStatus)
             }
             return attributeData
         }

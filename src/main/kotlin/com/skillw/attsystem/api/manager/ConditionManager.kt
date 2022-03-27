@@ -10,5 +10,5 @@ abstract class ConditionManager : LowerKeyMap<Condition>(), Manager {
     abstract fun conditionLine(slot: String, livingEntity: LivingEntity?, str: String): Boolean
     abstract fun conditionStrings(slot: String, livingEntity: LivingEntity?, strings: List<String>): Boolean
     abstract fun matches(str: String, type: Condition.ConditionType): Pair<Matcher, Condition>?
-    abstract fun lineConditions(slot: String, matcher: Matcher, livingEntity: LivingEntity?): Boolean
+    abstract fun lineConditions(slot: String, requirements: String, livingEntity: LivingEntity?): Boolean
 }

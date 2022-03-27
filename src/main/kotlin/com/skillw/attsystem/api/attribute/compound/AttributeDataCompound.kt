@@ -3,7 +3,7 @@ package com.skillw.attsystem.api.attribute.compound
 import com.skillw.attsystem.AttributeSystem
 import com.skillw.attsystem.AttributeSystem.attributeManager
 import com.skillw.attsystem.api.attribute.Attribute
-import com.skillw.attsystem.api.attribute.status.AttributeStatus
+import com.skillw.attsystem.api.attribute.status.Status
 import com.skillw.pouvoir.api.map.LowerMap
 import org.bukkit.inventory.ItemStack
 import taboolib.module.nms.ItemTag
@@ -37,29 +37,22 @@ class AttributeDataCompound : LowerMap<AttributeData> {
         return this.any { it.value.containsKey(attribute) }
     }
 
-    val combatValue: Double
-        get() {
-            var value = 0.0
-            for (data in this.values) {
-                value += data.combatValue
-            }
-            return value
-        }
-
     fun register(uuid: UUID) {
         AttributeSystem.attributeDataManager.register(uuid, this)
     }
 
-    fun getAttributeStatus(attribute: Attribute): AttributeStatus {
+    fun getAttributeStatus(attribute: Attribute): Status? {
         return this.getAttributeStatus(attribute.key)
     }
 
-    fun getAttributeStatus(attributeKey: String): AttributeStatus {
-        val attributeStatus = AttributeStatus()
+    fun getAttributeStatus(attributeKey: String): Status? {
+        var attributeStatus: Status? = null
         for (attributeData in this.values) {
             for (attribute in attributeData.keys) {
                 if (attribute.key == attributeKey) {
-                    attributeStatus.operation(attributeData[attribute.key] ?: continue, attribute.readGroup)
+                    val other = attributeData[attribute.key]?.clone() ?: continue
+                    if (attributeStatus == null) attributeStatus = other
+                    else attributeStatus.operation(other)
                 }
             }
         }
@@ -85,22 +78,13 @@ class AttributeDataCompound : LowerMap<AttributeData> {
         return this
     }
 
-    fun getAttributeTotal(attribute: Attribute): Double {
-        return attribute.total(this)
-    }
-
-    fun getAttributeTotal(attribute: String): Double {
-        return attributeManager[attribute]?.total(this) ?: 0.0
-    }
-
-
-    operator fun get(key: String, attribute: String): AttributeStatus {
+    operator fun get(key: String, attribute: String): Status? {
         val attribute1: Attribute = attributeManager[attribute] as Attribute
-        return this[key]?.get(attribute1) ?: AttributeStatus()
+        return this[key]?.get(attribute1)
     }
 
-    operator fun get(key: String, attribute: Attribute): AttributeStatus {
-        return this[key]?.get(attribute) ?: AttributeStatus()
+    operator fun get(key: String, attribute: Attribute): Status? {
+        return this[key]?.get(attribute)
     }
 
     fun toItemTag(): ItemTag {
@@ -119,24 +103,23 @@ class AttributeDataCompound : LowerMap<AttributeData> {
 
     companion object {
         fun fromItemTag(
-            itemTag: ItemTag,
-            oriented: Attribute.Oriented = Attribute.Oriented.ALL
+            itemTag: ItemTag
         ): AttributeDataCompound {
             val attributeDataCompound = AttributeDataCompound()
             for ((key, value) in itemTag) {
                 if (value.type != ItemTagType.COMPOUND) continue
                 val subTag = value.asCompound()
-                attributeDataCompound[key] = AttributeData.fromItemTag(subTag, oriented).release()
+                attributeDataCompound[key] = AttributeData.fromItemTag(subTag).release()
             }
             return attributeDataCompound
         }
 
         fun fromItem(
-            itemStack: ItemStack,
-            oriented: Attribute.Oriented = Attribute.Oriented.ALL
+            itemStack: ItemStack
         ): AttributeDataCompound? {
             val itemTag = itemStack.getItemTag()["ATTRIBUTE_DATA"]?.asCompound() ?: return null
-            return fromItemTag(itemTag, oriented)
+            return fromItemTag(itemTag)
         }
     }
+
 }

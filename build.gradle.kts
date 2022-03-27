@@ -31,9 +31,6 @@ taboolib {
         }
         dependencies {
             name("Pouvoir")
-            name("SkillAPI").optional(true)
-            name("PlaceholderAPI").optional(true)
-            name("ProSkillAPI").optional(true)
             name("MythicMobs").optional(true)
         }
     }
@@ -41,20 +38,16 @@ taboolib {
     install(
         "common",
         "common-5",
-        "module-database",
-        "module-database-mongodb",
         "module-nms",
         "module-nms-util",
         "module-chat",
         "module-lang",
-        "module-database",
         "module-configuration",
         "module-metrics",
         "platform-bukkit",
-        "expansion-player-database"
     )
 
-    version = "6.0.7-44"
+    version = "6.0.7-47"
     classifier = null
 
 }

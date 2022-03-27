@@ -5,7 +5,6 @@ import com.skillw.attsystem.AttributeSystem.attributeDataManager
 import com.skillw.attsystem.AttributeSystem.attributeSystemAPI
 import com.skillw.attsystem.AttributeSystem.configManager
 import com.skillw.attsystem.AttributeSystem.equipmentDataManager
-import com.skillw.attsystem.api.attribute.Attribute
 import com.skillw.attsystem.api.attribute.compound.AttributeData
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
 import com.skillw.attsystem.api.event.AttributeUpdateEvent
@@ -15,7 +14,6 @@ import com.skillw.pouvoir.util.EntityUtils.isAlive
 import com.skillw.pouvoir.util.EntityUtils.livingEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 import taboolib.platform.util.isNotAir
@@ -30,9 +28,6 @@ object AttributeDataManagerImpl : AttributeDataManager() {
     override fun updateAll() {
         this.keys.forEach { update(it) }
     }
-
-    override var playerBaseAttribute: AttributeData = AttributeData()
-    override var entityBaseAttribute: AttributeData = AttributeData()
 
     private var task: BukkitTask? = null
     private fun clearTask() {
@@ -63,18 +58,6 @@ object AttributeDataManagerImpl : AttributeDataManager() {
 
     override fun onReload() {
         clearTask()
-        playerBaseAttribute =
-            attributeSystemAPI.read(
-                Attribute.Oriented.ENTITY,
-                configManager["config"].getStringList("options.attribute.base-attribute.player"),
-                null
-            )
-        entityBaseAttribute =
-            attributeSystemAPI.read(
-                Attribute.Oriented.ENTITY,
-                configManager["config"].getStringList("options.attribute.base-attribute.entity"),
-                null
-            )
     }
 
     override fun update(entity: Entity): AttributeDataCompound? {
@@ -99,7 +82,7 @@ object AttributeDataManagerImpl : AttributeDataManager() {
                 now@ for ((equipmentKey, itemStack) in equipmentData) {
                     if (itemStack.isNotAir())
                         equipmentAttribute.operation(
-                            equipmentDataManager.readItem(Attribute.Oriented.ENTITY, itemStack, entity, equipmentKey)
+                            equipmentDataManager.readItem(itemStack, entity, equipmentKey)
                         )
                 }
             }
@@ -109,10 +92,6 @@ object AttributeDataManagerImpl : AttributeDataManager() {
                 attributeDataCompound.remove(it.key)
             }
             attributeDataCompound.operation(equipmentAttribute)
-            attributeDataCompound.register(
-                "BASE-ATTRIBUTE",
-                if (entity is Player) playerBaseAttribute else entityBaseAttribute
-            )
             //AFTER
             val afterEvent =
                 AttributeUpdateEvent(Time.AFTER, entity, attributeDataCompound)
@@ -150,7 +129,7 @@ object AttributeDataManagerImpl : AttributeDataManager() {
         return this.addAttribute(
             uuid,
             key,
-            attributeSystemAPI.read(Attribute.Oriented.ENTITY, attributes, uuid),
+            attributeSystemAPI.read(attributes, uuid),
             release
         )
     }

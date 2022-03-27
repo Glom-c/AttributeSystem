@@ -1,28 +1,6 @@
 prefix: '&d[&9AttributeSystem&d] '
-
-fight-in: '&d[&9AttributeSystem&d] &e你已进入战斗状态!'
-fight-out: '&d[&9AttributeSystem&d] &e你已离开战斗状态!'
-
-read-group-register: '&d[&9AttributeSystem&d] &e属性读取组 &6{0} &e已成功注册&e!'
-read-group-reload-start: '&d[&9AttributeSystem&d] &6属性读取组 &a正在开始加载...'
-read-group-reload-end: '&d[&9AttributeSystem&d] &6属性读取组 &a已全部加载完毕!'
-
-attribute-register: '&d[&9AttributeSystem&d] &e属性 &6{0} &8(&7 {1} &8) &e已成功注册&e!'
-attribute-reload-start: '&d[&9AttributeSystem&d] &6属性 &a正在开始加载...'
-attribute-reload-end: '&d[&9AttributeSystem&d] &6属性 &a已全部加载完毕!'
-
-condition-register: '&d[&9AttributeSystem&d] &e条件 &6{0} &e已成功注册&e!'
-condition-reload-start: '&d[&9AttributeSystem&d] &6条件 &a正在开始加载...'
-condition-reload-end: '&d[&9AttributeSystem&d] &6条件 &a已全部加载完毕!'
-
-script-object-reload-start: '&d[&9AttributeSystem&d] &6脚本对象 &a正在开始加载...'
-script-object-reload-end: '&d[&9AttributeSystem&d] &6脚本对象 &a已全部加载完毕!'
-
 equipment-type-error: '&d[&9AttributeSystem&d] &6{0} &c不是槽位类型!'
-
-disable-damage-type: '&d[&9AttributeSystem&d] &6{0} &c已被禁止普攻!'
-
-command-version: '&d[&9AttributeSystem&d] &e1.1.6'
+command-version: '&d[&9AttributeSystem&d] &e1.2.0'
 command-reload: '&d[&9AttributeSystem&d] &a插件已重载成功!'
 command-info:
   - '&d&l&m================================================'

@@ -7,12 +7,9 @@ import com.skillw.attsystem.AttributeSystem.equipmentDataManager
 import com.skillw.attsystem.AttributeSystem.formulaManager
 import com.skillw.attsystem.api.attribute.Attribute
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
-import com.skillw.attsystem.internal.manager.ASConfig.skillAPI
 import com.skillw.pouvoir.api.placeholder.PouPlaceHolder
 import com.skillw.pouvoir.util.NumberUtils.format
-import com.sucy.skill.SkillAPI
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
 import java.math.BigDecimal
 
 object AttributePlaceHolder : PouPlaceHolder("as", AttributeSystem) {
@@ -22,14 +19,17 @@ object AttributePlaceHolder : PouPlaceHolder("as", AttributeSystem) {
         attribute: Attribute,
         params: List<String>,
         livingEntity: LivingEntity
-    ): String = when (params.size) {
-        0 ->
-            BigDecimal(data.getAttributeTotal(attribute)).format()
-        1 -> {
-            BigDecimal(attribute.get(params[0], data, livingEntity)).format()
+    ): String {
+        val status = data.getAttributeStatus(attribute) ?: return "0.0"
+        return when (params.size) {
+            0 ->
+                attribute.readPattern.placeholder("total", attribute, status, livingEntity).toString()
+            1 -> {
+                attribute.readPattern.placeholder(params[0], attribute, status, livingEntity).toString()
+            }
+            else ->
+                "0.0"
         }
-        else ->
-            "0.0"
     }
 
     override fun onPlaceHolderRequest(params: String, livingEntity: LivingEntity, def: String): String {
@@ -69,7 +69,7 @@ object AttributePlaceHolder : PouPlaceHolder("as", AttributeSystem) {
                 if (equipment == null || !equipment.containsKey(key)) return "0.0"
                 val item = equipment[key, subKey] ?: return "0.0"
                 val attribute = attributeManager[attKey] ?: return "0.0"
-                val data = equipmentDataManager.readItem(attribute.oriented, item)
+                val data = equipmentDataManager.readItem(item)
                 return get(data, attribute, strings, livingEntity)
             }
             "formula" -> {
@@ -81,29 +81,6 @@ object AttributePlaceHolder : PouPlaceHolder("as", AttributeSystem) {
                 strings.removeAt(0)
                 if (strings.isEmpty()) return "0.0"
                 return formulaManager[strings[0]] ?: "N/A"
-            }
-            "mana" -> {
-                if (livingEntity !is Player) return "0.0"
-                return if (skillAPI) {
-                    SkillAPI.getPlayerData(livingEntity).mana.format()
-                } else "0.0"
-            }
-            "health" -> {
-                return BigDecimal(livingEntity.health).format()
-            }
-            "max" -> {
-                if (strings.size <= 1) return "0.0"
-                when (strings[1]) {
-                    "mana" -> {
-                        if (livingEntity !is Player) return "0.0"
-                        return if (skillAPI) {
-                            SkillAPI.getPlayerData(livingEntity).maxMana.format()
-                        } else "0.0"
-                    }
-                    "health" -> {
-                        return livingEntity.maxHealth.format()
-                    }
-                }
             }
         }
         return "0.0"
