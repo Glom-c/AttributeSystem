@@ -1,9 +1,0 @@
-# damage 计算伤害值
-damage:
-  script: 'mechanics.groovy::damage'
-# crit 计算暴击值
-#用js或groovy都能写
-crit:
-  script: 'mechanics.js::crit'
-vampire:
-  script: 'mechanics.groovy::vampire'

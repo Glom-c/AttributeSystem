@@ -1,8 +1,0 @@
-fire:
-  script: 'basic_conditions_1.0.0.groovy::fire'
-command:
-  script: 'basic_conditions_1.0.0.groovy::command'
-flag:
-  script: 'basic_conditions_1.0.0.groovy::flag'
-delay:
-  script: 'basic_conditions_1.0.0.groovy::delay'
