@@ -1,0 +1,82 @@
+#数据库配置
+database:
+  enable: false
+  host: localhost
+  port: 3306
+  user: root
+  password: root
+  database: root
+  table: my_database
+options:
+  debug: false
+  health-scale: 20
+  #最好不要改
+  number-pattern: '(?<value>(\\+|\\-)?(\\d+(?:(\\.\\d+))?))'
+  fight:
+    skip-crash-shot: true
+    attack-speed:
+      #cooldown 物品冷却
+      #vanilla 原版攻击速度机制
+      type: cooldown
+      #任何时间都能攻击
+      #伤害会被蓄力机制影响
+      damage-any-time: true
+      #蓄力机制 关了这个就不要开damage-any-time了
+      attack-force: true
+      #不冷却的材质
+      no-cooldown-types:
+        - 'BOW'
+        - 'CROSSBOW'
+    no-damage-ticks:
+      disable-world:
+        - 'example_world'
+      #tick
+      value: 5
+    fight-status:
+      #tick
+      time: 100
+    vanilla-armor: true
+    vanilla-regain: true
+    distance-attack:
+      effect: true
+      sound: true
+    vanilla-distance:
+      default: 2.8
+      creative: 4.5
+    #禁止直接普攻的材质
+    disable-damage-types:
+      - 'BOW'
+      - 'CROSSBOW'
+  mythic-skill:
+    label:
+      min: 100000000
+      max: 100001000
+  origin-skill:
+    label:
+      min: 100002000
+      max: 100003000
+  attribute:
+    #tick
+    time:
+      attribute-update: 10
+      attribute-clear: 1200
+      health-regain: 10
+    #忽略此行
+    ignores:
+      - '//'
+    line-condition:
+      #记得转义
+      symbol: '\/'
+      #单行条件支持以,为分割以达成单行多个条件
+      #  例: 攻击力: 100/Lv.10,职业限制: 战士
+      separator: ','
+    base-attribute:
+      player:
+        - '生命恢复: 0.1'
+        - '攻击速度: 1'
+        - '命中几率: 100(%)'
+        - '攻击距离: 2.7'
+        - '暴击伤害: 150(%)'
+      entity:
+        - '命中几率: 100(%)'
+

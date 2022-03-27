@@ -1,0 +1,31 @@
+#id
+test-level:
+  # line / strings / all
+  type: all
+  #名称
+  names:
+    - 'Lv\.(?<value>\d+)'
+    - '等级限制: (?<value>\d+)'
+  #脚本
+  #可填 js / groovy / 脚本路径::函数名(单行)
+  #变量:     entity : LivingEntity?,     text : String,      name : String
+  #含义:          实体                      本行文本             名称
+  #返回值为 Boolean ， 是否读取此行属性
+  #condition中的level函数
+  script: 'condition.js::level'
+  #也可以按下面这么写，不过因为性能不好不太推荐
+  #可用  groovy:: 开头来写groovy脚本，不过需要写导包
+#  script: |
+#    js::
+#    function main(){
+#    var Player = Java.type('org.bukkit.entity.Player')
+#    var Coerce = Java.type('com.skillw.pouvoir.taboolib.common5.Coerce')
+#    var hasEntity = entity != "null"
+#    if(!hasEntity) return true
+#    if(!(entity instanceof Player)){
+#        return true
+#    }
+#    var level = Coerce.toInteger(text.split(name)[1])
+#    return entity.level >= level
+#    }
+#    main()

@@ -1,0 +1,139 @@
+# 在这里的属性 重载即可注册
+# AttributeSystem没有脚本属性，
+# 在AttributeSystem里，属性与其功能的实现是完全分开的
+# 你可以通过修改各种公式乃至自定义机制，注册脚本监听器来实现属性的功能
+#ID
+PhysicalDamage:
+  #权重
+  priority: 1
+  #针对 实体
+  #可选:                       entity / item  /  all
+  #针对                         实体     物品    都针对
+  #是否会计算到实体属性上           是      否       是
+  #注：一般只用到实体属性， 物品属性会用在特定武器特定属性上，比如说 价值
+  oriented: entity
+  #名称
+  names:
+    - '攻击力'
+    - '物理伤害'
+    - '物理攻击'
+  #读取组
+  read-group: Default
+PhysicalHitChance:
+  priority: 2
+  oriented: entity
+  names:
+    - '命中几率'
+    - '命中率'
+  read-group: Percent
+PhysicalDodgeChance:
+  priority: 3
+  oriented: entity
+  names:
+    - '闪避几率'
+    - '闪避率'
+  read-group: Percent
+VampireChance:
+  priority: 4
+  oriented: entity
+  names:
+    - '全能吸血几率'
+  read-group: Percent
+PhysicalCriticalChance:
+  priority: 5
+  oriented: entity
+  names:
+    - '暴击几率'
+  read-group: Percent
+PhysicalCriticalMultiple:
+  priority: 6
+  oriented: entity
+  names:
+    - '暴击伤害'
+  read-group: Percent
+PhysicalDefense:
+  priority: 7
+  oriented: entity
+  names:
+    - '护甲'
+    - '物理防御'
+    - '防御力'
+  read-group: Default
+RealDamage:
+  priority: 8
+  oriented: entity
+  names:
+    - '真实伤害'
+  read-group: Default
+Vampire:
+  priority: 9
+  oriented: entity
+  names:
+    - '全能吸血'
+  read-group: Vampire
+PhysicalVampire:
+  priority: 10
+  oriented: entity
+  names:
+    - '生命偷取'
+    - '普攻吸血'
+  read-group: Vampire
+AttackDistance:
+  priority: 11
+  oriented: entity
+  names:
+    - '攻击距离'
+  read-group: Default
+AttackSpeed:
+  priority: 12
+  oriented: entity
+  names:
+    - '攻击速度'
+  read-group: Default
+MaxHealth:
+  priority: 13
+  oriented: entity
+  names:
+    - '生命值'
+    - '生命力'
+    - '最大生命值'
+  read-group: Default
+MovementSpeed:
+  priority: 14
+  oriented: entity
+  names:
+    - '移动速度'
+    - '移速'
+  read-group: Default
+SkillSpeed:
+  priority: 15
+  oriented: entity
+  names:
+    - '技能极速'
+    - '冷却缩减'
+  read-group: Default
+HealthRegain:
+  priority: 16
+  oriented: entity
+  names:
+    - '生命恢复'
+    - '回血'
+  read-group: Default
+PhysicalVampireChance:
+  priority: 17
+  oriented: entity
+  names:
+    - '吸血几率'
+  read-group: Percent
+Resistance:
+  priority: 18
+  oriented: entity
+  names:
+    - '击退抗性'
+  read-group: Default
+Luck:
+  priority: 19
+  oriented: entity
+  names:
+    - '幸运'
+  read-group: Default

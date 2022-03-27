@@ -1,0 +1,86 @@
+#公式组ID
+attack-damage:
+  #触发器
+  # attack 普通攻击
+  # skill-api-技能id-标识符 SkillAPI技能
+  # mythic-mobs-伤害标签 MM技能
+  # origin-skill-伤害标签
+  trigger: attack
+  #伤害类型
+  Physical:
+    #是否启用
+    enable: true
+    #机制id
+    damage:
+      #机制数据
+      #攻击者变量: {a.PAPI变量/PouPAPI变量}
+      #防御者变量: {d.PAPI变量/PouPAPI变量}
+      #PouPAPI支持存活实体
+      #AS提供的值
+      # origin AS处理前的伤害(一般是原版伤害)
+      # force 蓄力程度( 弓箭蓄力程度 或 普攻蓄力程度 )
+      enable: 'if(random(0,1),<,calculate({a.as_att:PhysicalHitChance}-{d.as_att:PhysicalDodgeChance}),true,false)'
+      value: '(({a.as_att:PhysicalDamage}+{origin})*(1-({d.as_att:PhysicalDefense}/(100+{d.as_att:PhysicalDefense})))) * {force}'
+    #机制从上到下按顺序执行
+    crit:
+      enable: 'if(random(0,1),<,calculate({a.as_att:PhysicalCriticalChance}),true,false)'
+      #下面的机制数据可以调用上面已执行机制的执行结果 格式为{id}
+      value: '{result}*(2+{a.as_att:PhysicalCriticalMultiple})'
+    vampire:
+      enable: 'if(random(0,1),<,calculate({a.as_att:PhysicalVampireChance}),true,false)'
+      value: '{result}*({a.as_att:PhysicalVampire_Percent}+{a.as_att:Vampire_Percent})+{a.as_att:PhysicalVampire}+{a.as_att:Vampire}'
+  Real:
+    enable: true
+    damage:
+      enable: 'if(random(0,1),<,calculate({a.as_att:PhysicalHitChance}-{d.as_att:PhysicalDodgeChance}),true,false)'
+      value: '{a.as_att:RealDamage}'
+Example-SKAPI:
+  # skill-api-技能id-标识符 SkillAPI技能
+  trigger: skill-api-exampleskill-first
+  Real:
+    enable: true
+    damage:
+      enable: 'true'
+      value: '1000'
+    crit:
+      enable: 'if(random(0,1),<,0.5,true,false)'
+      value: '{result}*(1+{a.as_att:PhysicalCriticalMultiple})'
+    vampire:
+      enable: 'if(random(0,1),<,0.25,true,false)'
+      value: '{result}*({a.as_att:Vampire}+{a.as_att:PhysicalVampire})'
+Example-MMSkill:
+  # mythic-mobs-伤害标签 MM技能
+  trigger: mythic-mobs-100000000
+  Real:
+    damage:
+      enable: 'true'
+      value: '100'
+    crit:
+      enable: 'if(random(0,1),<,0.5,true,false)'
+      value: '{result}*(1+{a.as_att:PhysicalCriticalMultiple})'
+    vampire:
+      enable: 'if(random(0,1),<,0.25,true,false)'
+      value: '{result}*({a.as_att:Vampire}+{a.as_att:PhysicalVampire})'
+Example-OriginSkill:
+  # origin-skill-伤害标签
+  trigger: origin-skill-100002000
+  Real:
+    damage:
+      enable: 'true'
+      value: '114514'
+    crit:
+      enable: 'if(random(0,1),<,0.5,true,false)'
+      value: '{result}*(1+{a.as_att:PhysicalCriticalMultiple})'
+    vampire:
+      enable: 'if(random(0,1),<,0.25,true,false)'
+      value: '{result}*({a.as_att:Vampire}+{a.as_att:PhysicalVampire})'
+Example-DamageCasuse:
+  # id列表
+  # https://bukkit.windit.net/javadoc/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+  # 格式 damage-cause-id小写
+  trigger: damage-cause-fall
+  Real:
+    enable: true
+    damage:
+      enable: 'true'
+      value: '2'

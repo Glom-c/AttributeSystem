@@ -1,0 +1,74 @@
+Slot:
+  type: all
+  names:
+    - '槽位: (?<value>.*)'
+  script: 'basic_conditions_1.0.0.groovy::slot'
+ltitude:
+  type: all
+  names:
+    - '高度: (?<min>\d+)-(/<max>\d+)'
+    - '高度: (?<min>\d+)'
+  script: 'basic_conditions_1.0.0.groovy::altitude'
+Attribute:
+  type: all
+  names:
+    - '需要(?<name>.*)属性: (?<value>\d+)'
+  script: 'basic_conditions_1.0.0.groovy::attribute'
+Biome:
+  type: all
+  names:
+    - '生物群系: (?<name>.*)'
+    - '不在生物群系: (?<name>.*)'
+  script: 'basic_conditions_1.0.0.groovy::biome'
+Burning:
+  type: all
+  names:
+    - '需要在燃烧'
+    - '需要不在燃烧'
+  script: 'basic_conditions_1.0.0.groovy::burning'
+Fighting:
+  type: all
+  names:
+    - '需要战斗状态'
+    - '需要不在战斗'
+  script: 'basic_conditions_1.0.0.groovy::fighting'
+Food:
+  type: all
+  names:
+    - '要求饱食度: (?<value>\d+)'
+  script: 'basic_conditions_1.0.0.js::food'
+Ground:
+  type: all
+  names:
+    - '要求在地面'
+    - '要求不在地面'
+  script: 'basic_conditions_1.0.0.js::ground'
+Health:
+  type: all
+  names:
+    - '生命值需要: (?<min>\d+)-(?<max>\d+)'
+    - '生命值需要: (?<min>\d+)'
+  script: 'basic_conditions_1.0.0.js::health'
+Permission:
+  type: all
+  names:
+    - '要求权限: (?<value>.*)'
+  script: 'basic_conditions_1.0.0.js::permission'
+Water:
+  type: all
+  names:
+    - '需要在水里'
+    - '需要不在水里'
+  script: 'basic_conditions_1.0.0.js::water'
+Weather:
+  type: all
+  names:
+    - '需要天气: (?<value>.*)'
+    - '需要不是天气: (?<value>.*)'
+  script: 'basic_conditions_1.0.0.js::weather'
+World:
+  type: all
+  names:
+    - '要求世界: (?<value>.*)'
+    - '需要不是世界: (?<value>.*)'
+  script: 'basic_conditions_1.0.0.js::world'

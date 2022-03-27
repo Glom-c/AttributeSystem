@@ -1,0 +1,45 @@
+prefix: '&d[&9AttributeSystem&d] '
+
+fight-in: '&d[&9AttributeSystem&d] &eInto fighting!'
+fight-out: '&d[&9AttributeSystem&d] &eOut of fighting!'
+
+read-group-register: '&d[&9AttributeSystem&d] &eThe Read Group &6{0} &eregistered!'
+read-group-reload-start: '&d[&9AttributeSystem&d] &6Read Group &ais loading...'
+read-group-reload-end: '&d[&9AttributeSystem&d] &6Read Group &aloaded!'
+
+attribute-register: '&d[&9AttributeSystem&d] &eThe attribute &6{0} &8(&7 {1} &8) &eregistered!'
+attribute-reload-start: '&d[&9AttributeSystem&d] &6Attribute &ais loading...'
+attribute-reload-end: '&d[&9AttributeSystem&d] &6Attribute &aloaded!'
+
+condition-register: '&d[&9AttributeSystem&d] &eThe condition &6{0} &eregistered&e!'
+condition-reload-start: '&d[&9AttributeSystem&d] &6Condition &ais loading...'
+condition-reload-end: '&d[&9AttributeSystem&d] &6Condition &aloaded!'
+
+script-object-reload-start: '&d[&9AttributeSystem&d] &6Script objects &ais loading...'
+script-object-reload-end: '&d[&9AttributeSystem&d] &6Script objects &aloaded!'
+
+equipment-type-error: '&d[&9AttributeSystem&d] &6{0} &cis not a slot type!'
+
+disable-damage-type: '&d[&9AttributeSystem&d] &6{0} &ccan t attack directly!'
+
+command-version: '&d[&9AttributeSystem&d] &e1.1.6'
+command-reload: '&d[&9AttributeSystem&d] &aReloaded!'
+command-info:
+  - '&d&l&m================================================'
+  - '&b/as stats [Player] [book/text]'
+  - '  &6-> &eShow the stats&e.'
+  - '&b/as itemstats [Player] [key] [slot] [book/text]'
+  - '  &6-> &eShow the stats of a item&e.'
+  - '&b/as entitystats [book/text]'
+  - '  &6-> &eShow the stats of the entity you look at&e.'
+  - '&b/as personal [Type] [Sub Type]'
+  - '  &6-> &eSet the info type&e.'
+  - '&b/as reload                                     '
+  - '  &6-> &eReload&e.'
+  - '&b/as version'
+  - '  &6-> &eVersion info.&e.'
+  - '&d&l&m================================================'
+command-personal: '&d[&9AttributeSystem&d] &eYour &6{0} &eis changed to &b{1} &e!'
+command-valid-player: '&d[&9AttributeSystem&d] &cThe player &6{0} &cdosen t exist!'
+command-valid-item: '&d[&9AttributeSystem&d] &cThe item is not exists!'
+command-valid-entity: '&d[&9AttributeSystem&d] &cYou have to look at a Entity!'
