@@ -1,0 +1,70 @@
+Default:
+  #总值
+  total: '(<value> + random(<valueMin>,<valueMax>))*(1+(<percent>/100 + random(<percentMin>,<percentMax>)/100)) * if(<scalar>,==,0,1,<scalar>)'
+  #读取格式(正则)
+  #从上到下先后匹配
+  #特殊字符要转义
+  patterns:
+    # 攻击力: 11-23(%)
+    - '<name>: <percentMin>-<percentMax>\(%\)'
+    # 攻击力: 10-20
+    - '<name>: <valueMin>-<valueMax>'
+    # 攻击力: 10(%)
+    - '<name>: <percent>\(%\)'
+    # 攻击力: 100
+    - '<name>: <value>'
+    #  攻击力*10
+    #  <scalar:捕获组id> 以使用乘模式
+    - '<name>\*<scalar:scalar>'
+  #变量(PAPI / PouPAPI)
+  #调用变量格式: %as_att:属性ID_下面的id%
+  placeholder:
+    #占位符id
+    #可带入上面patterns中获取到的值
+    total: <total>
+    scalar: <scalar>
+    value: <value>
+    percent: <percent>/100
+    valueMin: <valueMin>
+    valueMax: <valueMax>
+    percentMin: <percentMin>/100
+    percentMax: <percentMax>/100
+    valueRandom: <value> + random(<valueMin>,<valueMax>)
+    percentRandom: (<percent>/100 + random(<percentMin>,<percentMax>)/100)
+Percent:
+  total: '(<percent>/100 + random(<percentMin>,<percentMax>)/100)'
+  patterns:
+    # 暴击率: 10-60(%)
+    - '<name>: <percentMin>-<percentMax>\(%\)'
+    # 暴击率: 50(%)
+    - '<name>: <percent>\(%\)'
+  placeholder:
+    total: <total>
+    percent: <percent>/100
+    percentMin: <percentMin>/100
+    percentMax: <percentMax>/100
+    percentRandom: (<percent>/100 + random(<percentMin>,<percentMax>)/100)
+Vampire:
+  #总值
+  total: '<value> + random(<valueMin>,<valueMax>)'
+  #读取格式
+  patterns:
+    # 生命偷取: 11-23(%)
+    - '<name>: <percentMin>-<percentMax>\(%\)'
+    # 生命偷取: 10-20
+    - '<name>: <valueMin>-<valueMax>'
+    # 生命偷取: 10(%)
+    - '<name>: <percent>\(%\)'
+    # 生命偷取: 100
+    - '<name>: <value>'
+  #变量(PAPI / PouPAPI)
+  placeholder:
+    total: <total>
+    value: <value>
+    percent: <percent>/100
+    valueMin: <valueMin>
+    valueMax: <valueMax>
+    percentMin: <percentMin>/100
+    percentMax: <percentMax>/100
+    valueRandom: <value> + random(<valueMin>,<valueMax>)
+    percentRandom: (<percent>/100 + random(<percentMin>,<percentMax>)/100)

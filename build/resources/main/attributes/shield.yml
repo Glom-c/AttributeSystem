@@ -1,0 +1,7 @@
+Reduce:
+  priority: 999
+  oriented: entity
+  names:
+    - '减伤'
+    - '盾牌减伤'
+  read-group: Default
