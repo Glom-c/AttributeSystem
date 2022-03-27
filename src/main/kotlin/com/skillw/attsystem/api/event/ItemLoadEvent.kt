@@ -2,12 +2,12 @@ package com.skillw.attsystem.api.event
 
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
-import taboolib.common.platform.event.ProxyEvent
+import taboolib.platform.type.BukkitProxyEvent
 
 class ItemLoadEvent(
     val entity: Entity,
     val itemStack: ItemStack
-) : ProxyEvent() {
+) : BukkitProxyEvent() {
     override val allowCancelled = true
 
 }

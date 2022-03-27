@@ -1,28 +1,7 @@
 prefix: '&d[&9AttributeSystem&d] '
-
-fight-in: '&d[&9AttributeSystem&d] &eInto fighting!'
-fight-out: '&d[&9AttributeSystem&d] &eOut of fighting!'
-
-read-group-register: '&d[&9AttributeSystem&d] &eThe Read Group &6{0} &eregistered!'
-read-group-reload-start: '&d[&9AttributeSystem&d] &6Read Group &ais loading...'
-read-group-reload-end: '&d[&9AttributeSystem&d] &6Read Group &aloaded!'
-
-attribute-register: '&d[&9AttributeSystem&d] &eThe attribute &6{0} &8(&7 {1} &8) &eregistered!'
-attribute-reload-start: '&d[&9AttributeSystem&d] &6Attribute &ais loading...'
-attribute-reload-end: '&d[&9AttributeSystem&d] &6Attribute &aloaded!'
-
-condition-register: '&d[&9AttributeSystem&d] &eThe condition &6{0} &eregistered&e!'
-condition-reload-start: '&d[&9AttributeSystem&d] &6Condition &ais loading...'
-condition-reload-end: '&d[&9AttributeSystem&d] &6Condition &aloaded!'
-
-script-object-reload-start: '&d[&9AttributeSystem&d] &6Script objects &ais loading...'
-script-object-reload-end: '&d[&9AttributeSystem&d] &6Script objects &aloaded!'
-
 equipment-type-error: '&d[&9AttributeSystem&d] &6{0} &cis not a slot type!'
 
-disable-damage-type: '&d[&9AttributeSystem&d] &6{0} &ccan t attack directly!'
-
-command-version: '&d[&9AttributeSystem&d] &e1.1.6'
+command-version: '&d[&9AttributeSystem&d] &e1.2.0'
 command-reload: '&d[&9AttributeSystem&d] &aReloaded!'
 command-info:
   - '&d&l&m================================================'
