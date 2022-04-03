@@ -34,6 +34,11 @@ object ASConfig : ConfigManager(AttributeSystem) {
         get() =
             this["config"].getLong("options.attribute.time.attribute-clear")
 
+    override fun onLoad() {
+        createIfNotExists("formula", "example.yml")
+
+    }
+
     override fun onEnable() {
         if (!this["config"].contains("options.attribute.time.attribute-clear")) {
             this["config"].set("options.attribute.time.attribute-clear", 1200L)

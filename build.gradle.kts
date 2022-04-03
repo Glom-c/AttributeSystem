@@ -25,6 +25,7 @@ tasks.dokkaJavadoc.configure {
 
 taboolib {
 
+
     description {
         contributors {
             name("Glom_")
@@ -47,7 +48,7 @@ taboolib {
         "platform-bukkit",
     )
 
-    version = "6.0.7-47"
+    version = "6.0.7-50"
     classifier = null
 
 }

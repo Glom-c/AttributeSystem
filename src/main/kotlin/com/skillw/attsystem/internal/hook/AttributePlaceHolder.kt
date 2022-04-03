@@ -10,6 +10,7 @@ import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
 import com.skillw.pouvoir.api.placeholder.PouPlaceHolder
 import com.skillw.pouvoir.util.NumberUtils.format
 import org.bukkit.entity.LivingEntity
+import taboolib.platform.util.isAir
 import java.math.BigDecimal
 
 object AttributePlaceHolder : PouPlaceHolder("as", AttributeSystem) {
@@ -69,6 +70,7 @@ object AttributePlaceHolder : PouPlaceHolder("as", AttributeSystem) {
                 if (equipment == null || !equipment.containsKey(key)) return "0.0"
                 val item = equipment[key, subKey] ?: return "0.0"
                 val attribute = attributeManager[attKey] ?: return "0.0"
+                if (item.isAir()) return "0.0"
                 val data = equipmentDataManager.readItem(item)
                 return get(data, attribute, strings, livingEntity)
             }

@@ -123,7 +123,7 @@ object ASCommand {
                                     player,
                                     subKey
                                 )
-                            sendStatText(adaptPlayer(sender), title, attributeDataCompound, player)
+                            sendStatText(adaptPlayer(sender), title, attributeDataCompound, player, true)
                         }
                     }
                 }
@@ -156,12 +156,14 @@ object ASCommand {
 
     private fun attributeStatusToJson(
         attributeDataCompound: AttributeDataCompound,
-        livingEntity: LivingEntity
+        livingEntity: LivingEntity,
+        item: Boolean = false
     ): LinkedList<TellrawJson> {
         val attributes = AttributeSystem.attributeManager.attributes
         val list = LinkedList<TellrawJson>()
         for (index in attributes.indices) {
             val attribute = attributes[index]
+            if (!attribute.entity && item) continue
             val status = attributeDataCompound.getAttributeStatus(attribute) ?: continue
             val json = attribute.readPattern.stat(
                 attribute,
@@ -177,10 +179,11 @@ object ASCommand {
         sender: ProxyCommandSender,
         title: String,
         attributeDataCompound: AttributeDataCompound,
-        livingEntity: LivingEntity
+        livingEntity: LivingEntity,
+        item: Boolean = false
     ) {
         sender.sendMessage(title)
-        attributeStatusToJson(attributeDataCompound, livingEntity).forEach {
+        attributeStatusToJson(attributeDataCompound, livingEntity, item).forEach {
             it.sendTo(sender)
         }
     }
