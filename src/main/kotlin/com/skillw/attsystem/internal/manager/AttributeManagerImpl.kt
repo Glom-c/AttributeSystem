@@ -32,6 +32,7 @@ object AttributeManagerImpl : AttributeManager() {
     }
 
     override fun register(key: String, value: Attribute) {
+        attributes.removeIf { it == value }
         attributes.add(value)
         attributes.sort()
         put(key, value)
